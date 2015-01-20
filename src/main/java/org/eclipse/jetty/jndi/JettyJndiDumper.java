@@ -18,7 +18,11 @@ public class JettyJndiDumper
 
     public void dump(PrintWriter out, Object obj) throws IOException, ReflectiveOperationException
     {
-        if (ReflectUtils.isInstanceOf(obj,jettyLocalContextClass))
+        if (obj == null)
+        {
+            out.printf("<null object>%n");
+        }
+        else if (ReflectUtils.isInstanceOf(obj,jettyLocalContextClass))
         {
             out.printf("Jetty Local Context: (%s)%n",obj.getClass().getName());
             Object root = ReflectUtils.invokeMethod(obj.getClass(),"getRoot",new Object[0]);
@@ -36,6 +40,10 @@ public class JettyJndiDumper
         {
             out.printf("Jetty NamingContext: (%s)%n",obj.getClass().getName());
             dumpNamingContext(out,obj);
+        }
+        else
+        {
+            out.printf("Object: (%s) %s%n", obj.getClass().getName(), obj.toString());
         }
     }
 
